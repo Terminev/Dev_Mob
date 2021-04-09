@@ -22,7 +22,8 @@ import {View,
         this.state = {
           previousInputValue: 0,
           inputValue: 0,
-          selectedSymbol: null
+          selectedSymbol: null,
+          virgule: 0,
         }
     }
 
@@ -66,18 +67,40 @@ _onInputButtonPressed(input) {
       case 'number':
           return this._handleNumberInput(input)
       case 'string':
+        if(input != "."){
           return this._handleStringInput(input)
+        }else{
+          return this._handleVirguleInput()
+        }
+          
   }
 }
-_handleNumberInput(num) {
-  let inputValue = (this.state.inputValue * 10) + num;
+_handleVirguleInput(){
+  this.state.virgule = true;
+}
 
+_handleNumberInput(num) {
+
+  if(typeof this.state.inputValue == 'string' ){
+    this.state.inputValue = 0;
+    inputValue = (this.state.inputValue * 10) + num;
+  }
+  else if(this.state.virgule == true) {
+    let x = this.state.previousPoint + 1 ;
+    let dividande = Math.pow(10, x);
+    var inputValue = (num/dividande) + this.state.inputValue ;
+    this.state.previousPoint += 1;
+  }else{
+    inputValue = (this.state.inputValue * 10) + num;
+  }
   this.setState({
       inputValue: inputValue
   })
 }
 
 _handleStringInput(str) {
+  this.state.virgule = false;
+  this.state.previousPoint = 0;
   switch (str) {
       case '/':
       case '*':
@@ -97,33 +120,34 @@ _handleStringInput(str) {
 
                 if (!symbol) {
                     return;
-                }else if(inputValue == 0 || symbol == '/'){
+                }else if(inputValue == 0 && symbol == '/'){
                   this.setState({
                     inputValue: 'La division par 0 ne fonctionne pas',
-                    selectedSymbol: null,
                     previousInputValue: 0,
                   })
                 }else{
                   this.setState({
                     previousInputValue: 0,
                     inputValue: eval(previousInputValue + symbol + inputValue),
-                    selectedSymbol: null
+                    selectedSymbol: null,
                 });
                 }
 
                 
                 break;
-          case 'CE': 
-                inputValue = 0;   
-                this.state.previousInputValue = 0;
-                this.setState({
-                  inputValue: inputValue
-                }) 
-          case 'C':   
-            inputValue = 0;   
-            this.setState({
-              inputValue: inputValue
-            }) 
+                  case 'CE': 
+                        inputValue = 0;   
+                        this.state.previousInputValue = 0;
+                        this.setState({
+                          inputValue: inputValue,
+                          virgule: false,
+                        }) 
+                  case 'C':   
+                    inputValue = 0;   
+                    this.setState({
+                      inputValue: inputValue,
+                      virgule: false,
+                    }) 
   }
 }
 }
