@@ -8,6 +8,7 @@ import {View,
  } from 'react-native';
 
  const inputButtons = [
+  ['CE', 'C'],
   [1, 2, 3, '/'],
   [4, 5, 6, '*'],
   [7, 8, 9, '-'],
@@ -92,17 +93,37 @@ _handleStringInput(str) {
                 let symbol = this.state.selectedSymbol,
                     inputValue = this.state.inputValue,
                     previousInputValue = this.state.previousInputValue;
+                    console.log(inputValue)
 
                 if (!symbol) {
                     return;
-                }
-
-                this.setState({
+                }else if(inputValue == 0 || symbol == '/'){
+                  this.setState({
+                    inputValue: 'La division par 0 ne fonctionne pas',
+                    selectedSymbol: null,
+                    previousInputValue: 0,
+                  })
+                }else{
+                  this.setState({
                     previousInputValue: 0,
                     inputValue: eval(previousInputValue + symbol + inputValue),
                     selectedSymbol: null
                 });
+                }
+
+                
                 break;
+          case 'CE': 
+                inputValue = 0;   
+                this.state.previousInputValue = 0;
+                this.setState({
+                  inputValue: inputValue
+                }) 
+          case 'C':   
+            inputValue = 0;   
+            this.setState({
+              inputValue: inputValue
+            }) 
   }
 }
 }
