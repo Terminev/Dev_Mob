@@ -143,29 +143,31 @@ void onNewSymbol(String digit) {
 
 void onEquals() {
 
-if(symbol == '+'){
-  var result = previousInput!.toInt() + input!.toInt();
-  print(result);
-}else if (symbol == '-'){
-  var result = previousInput!.toInt() - input!.toInt();
-  print(result);
-}else if (symbol == '*'){
-  var result = previousInput!.toInt() * input!.toInt();
-  print(result);
-}else if (symbol == '/' ){
-  var result = previousInput!.toInt() / input!.toInt();
-  print(result);
-}else{
-  return;
-} 
+  if(symbol == '+'){
+    var result = previousInput!.toInt() + input!.toInt();
+    input = result.toDouble();
+  }else if (symbol == '-'){
+    var result = previousInput!.toInt() - input!.toInt();
+    input = result.toDouble();
+  }else if (symbol == '*'){
+    var result = previousInput!.toInt() * input!.toInt();
+    input = result.toDouble();
+  }else if (symbol == '/' ){
+    var result = previousInput!.toInt() / input!.toInt();
+    input = result.toDouble();
+  }else{
+    return;
+  } 
+   
 }
 
 void onResetPreviousValue(String digit){
-  input = 0;
+  input = null;
 }
 void onResetValue(String digit){
-  input = 0;
-  
+  input = null;
+  symbol = null;
+  previousInput =null; 
 }
 }
 class InputButton extends StatelessWidget {
