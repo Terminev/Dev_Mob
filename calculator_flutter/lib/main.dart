@@ -124,20 +124,22 @@ void onItemClicked(String value) {
 }
 
 void onNewDigit(String digit) {
-  input = double.parse(digit);
+  if(input == null){
+    input = 0;
+  }
+  var nbr = input!.toInt() * 10 + int.parse(digit);
+  input = double.parse(nbr.toString()) ;
 }
 
 void onNewSymbol(String digit) {
   
-  if(input == null){
+  if(input == 0){
     previousInput = 0;
     symbol = digit;
-    print('je suis dans le if');
   }else{
     symbol = digit;
     previousInput = input;
-    print('Previous Input');
-    print(previousInput);
+    input = 0;
   }
 }
 
@@ -153,21 +155,25 @@ void onEquals() {
     var result = previousInput!.toInt() * input!.toInt();
     input = result.toDouble();
   }else if (symbol == '/' ){
-    var result = previousInput!.toInt() / input!.toInt();
+    if(input == 0){
+      input = 0;
+      previousInput= 0;
+      symbol = null;
+    }else{
+      var result = previousInput!.toInt() / input!.toInt();
     input = result.toDouble();
-  }else{
-    return;
-  } 
-   
+    }
+    
+  }
 }
 
 void onResetPreviousValue(String digit){
-  input = null;
+  input = 0;
 }
 void onResetValue(String digit){
-  input = null;
+  input = 0;
   symbol = null;
-  previousInput =null; 
+  previousInput =0; 
 }
 }
 class InputButton extends StatelessWidget {
