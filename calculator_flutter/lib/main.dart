@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:calculator_flutter/res/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -32,11 +34,11 @@ double? previousInput;
 String? symbol;
 
  static const List<List<String>> grid = <List<String>>[
-   
- <String>["7", "8", "9", "-"],
- <String>["4", "5", "6", "*"],
- <String>["1", "2", "3", "/"],
- <String>["0", ".", "=", "+"],
+  <String>["CE", "C"],
+  <String>["7", "8", "9", "-"],
+  <String>["4", "5", "6", "*"],
+  <String>["1", "2", "3", "/"],
+  <String>["0", ".", "=", "+"],
 ]; 
  @override
  Widget build(BuildContext context) {
@@ -105,8 +107,16 @@ void onItemClicked(String value) {
    case '*':
      onNewSymbol(value);
      break;
+
    case '=':
      onEquals();
+     break;
+  case 'CE':
+      onResetValue(value);
+      break;
+  case 'C':
+      onResetPreviousValue(value);
+      break;
  }
 
  // Force l'interface à se redessiner
@@ -114,15 +124,48 @@ void onItemClicked(String value) {
 }
 
 void onNewDigit(String digit) {
- // TODO
+  input = double.parse(digit);
 }
 
 void onNewSymbol(String digit) {
- // TODO
+  
+  if(input == null){
+    previousInput = 0;
+    symbol = digit;
+    print('je suis dans le if');
+  }else{
+    symbol = digit;
+    previousInput = input;
+    print('Previous Input');
+    print(previousInput);
+  }
 }
 
 void onEquals() {
- // TODO
+
+if(symbol == '+'){
+  var result = previousInput!.toInt() + input!.toInt();
+  print(result);
+}else if (symbol == '-'){
+  var result = previousInput!.toInt() - input!.toInt();
+  print(result);
+}else if (symbol == '*'){
+  var result = previousInput!.toInt() * input!.toInt();
+  print(result);
+}else if (symbol == '/' ){
+  var result = previousInput!.toInt() / input!.toInt();
+  print(result);
+}else{
+  return;
+} 
+}
+
+void onResetPreviousValue(String digit){
+  input = 0;
+}
+void onResetValue(String digit){
+  input = 0;
+  
 }
 }
 class InputButton extends StatelessWidget {

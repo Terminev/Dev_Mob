@@ -132,8 +132,6 @@ _handleStringInput(str) {
                     selectedSymbol: null,
                 });
                 }
-
-                
                 break;
                   case 'CE': 
                         inputValue = 0;   
