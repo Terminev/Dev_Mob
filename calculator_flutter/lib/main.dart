@@ -1,5 +1,5 @@
 import 'dart:html';
-
+import 'dart:math';
 import 'package:calculator_flutter/res/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +29,11 @@ class Calculator extends StatefulWidget {
 
 class _CalculatorState extends State<Calculator> {
 
+int previousPoint = 0;
 double? input;
 double? previousInput;
 String? symbol;
+bool? virgule;
 
  static const List<List<String>> grid = <List<String>>[
   <String>["CE", "C"],
@@ -112,10 +114,13 @@ void onItemClicked(String value) {
      onEquals();
      break;
   case 'CE':
-      onResetValue(value);
+      onResetValue();
       break;
   case 'C':
-      onResetPreviousValue(value);
+      onResetPreviousValue();
+      break;
+  case '.':
+      onPointVirgule();
       break;
  }
 
@@ -124,11 +129,32 @@ void onItemClicked(String value) {
 }
 
 void onNewDigit(String digit) {
+  double nbr;
+  int x;
+  int dividande;
+
   if(input == null){
     input = 0;
+    nbr = input! * 10 + int.parse(digit);
+    input = double.parse(nbr.toString()) ;
+    print("je suis input null");
+  }else if(virgule == true){
+    x = previousPoint + 1;
+    dividande = (pow(10, x)).toInt();
+    print("Avant le calcul $input $dividande $digit");
+    print("calcul:");
+    print((9 / 100) + 9.3);
+    nbr = (int.parse(digit) / dividande) + input!;
+    input = double.parse(nbr.toString());    
+    previousPoint += 1;
+    print(previousPoint);
+    // print("$x $nbr $dividande ");
+    // print(input);
+  }else{
+    nbr = input! * 10 + int.parse(digit);
+    input = double.parse(nbr.toString());
   }
-  var nbr = input!.toInt() * 10 + int.parse(digit);
-  input = double.parse(nbr.toString()) ;
+  
 }
 
 void onNewSymbol(String digit) {
@@ -140,19 +166,21 @@ void onNewSymbol(String digit) {
     symbol = digit;
     previousInput = input;
     input = 0;
+    virgule = false;
+    previousPoint = 0;
   }
 }
 
 void onEquals() {
 
   if(symbol == '+'){
-    var result = previousInput!.toInt() + input!.toInt();
+    var result = previousInput! + input!;
     input = result.toDouble();
   }else if (symbol == '-'){
-    var result = previousInput!.toInt() - input!.toInt();
+    var result = previousInput! - input!;
     input = result.toDouble();
   }else if (symbol == '*'){
-    var result = previousInput!.toInt() * input!.toInt();
+    var result = previousInput! * input!;
     input = result.toDouble();
   }else if (symbol == '/' ){
     if(input == 0){
@@ -160,20 +188,28 @@ void onEquals() {
       previousInput= 0;
       symbol = null;
     }else{
-      var result = previousInput!.toInt() / input!.toInt();
-    input = result.toDouble();
+      var result = previousInput! / input!;
+    input = result;
     }
     
   }
 }
 
-void onResetPreviousValue(String digit){
-  input = 0;
+void onPointVirgule(){
+  virgule = true;
 }
-void onResetValue(String digit){
+
+void onResetPreviousValue(){
+  input = 0;
+  virgule = false;
+  previousPoint = 0;
+}
+void onResetValue(){
   input = 0;
   symbol = null;
   previousInput =0; 
+  virgule = false;
+  previousPoint = 0;
 }
 }
 class InputButton extends StatelessWidget {
