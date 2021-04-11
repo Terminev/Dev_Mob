@@ -137,24 +137,16 @@ void onNewDigit(String digit) {
     input = 0;
     nbr = input! * 10 + int.parse(digit);
     input = double.parse(nbr.toString()) ;
-    print("je suis input null");
   }else if(virgule == true){
     x = previousPoint + 1;
     dividande = (pow(10, x)).toInt();
-    print("Avant le calcul $input $dividande $digit");
-    print("calcul:");
-    print((9 / 100) + 9.3);
     nbr = (int.parse(digit) / dividande) + input!;
     input = double.parse(nbr.toString());    
     previousPoint += 1;
-    print(previousPoint);
-    // print("$x $nbr $dividande ");
-    // print(input);
   }else{
     nbr = input! * 10 + int.parse(digit);
     input = double.parse(nbr.toString());
   }
-  
 }
 
 void onNewSymbol(String digit) {
