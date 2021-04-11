@@ -21,9 +21,10 @@ import {View,
         
         this.state = {
           previousInputValue: 0,
+          previousPoint : 0,
           inputValue: 0,
           selectedSymbol: null,
-          virgule: 0,
+          virgule: false,
         }
     }
 
@@ -80,7 +81,7 @@ _handleVirguleInput(){
 }
 
 _handleNumberInput(num) {
-
+console.log(this.state.virgule);
   if(typeof this.state.inputValue == 'string' ){
     this.state.inputValue = 0;
     inputValue = (this.state.inputValue * 10) + num;
@@ -109,14 +110,13 @@ _handleStringInput(str) {
           this.setState({
               selectedSymbol: str,
               previousInputValue: this.state.inputValue,
-              inputValue: 0
+              inputValue: 0,
           });
           break;
           case '=':
                 let symbol = this.state.selectedSymbol,
                     inputValue = this.state.inputValue,
                     previousInputValue = this.state.previousInputValue;
-                    console.log(inputValue)
 
                 if (!symbol) {
                     return;
