@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity() {
     private var previousInput: Float? = null
     private var symbol: String? = null
     private var zero: Boolean = false
-    private  var point: Boolean = false
-    private var previousPoint: Int = 0
+    private  var decim: Boolean = false
+    private var previousDecim: Int = 0
     private var previousSymbol: Float? = null
     companion object {
         private val INPUT_BUTTONS = listOf(
@@ -61,15 +61,15 @@ class MainActivity : AppCompatActivity() {
     private fun onCellClicked(value: String) {
         when {
             value.isNum() -> {
-                if(point == true){
+                if(decim == true){
                     input = (value.toFloat() / 10) + previousInput!!
                     updateDisplayContainer(input.toString())
-                    point = false
-                    previousPoint = 1
-                }else if(previousPoint != 0) {
+                    decim = false
+                    previousDecim = 1
+                }else if(previousDecim != 0) {
                     input = value.toFloat()
                     updateDisplayContainer( value!!)
-                    previousPoint!! + 1
+                    previousDecim!! + 1
                 }else{
                     input = value.toFloat()
                     updateDisplayContainer(input.toString())
@@ -78,44 +78,44 @@ class MainActivity : AppCompatActivity() {
             value == "Ce"->{
                 onCeClicked()
             }
-            value == "C"->{
-                onCclicked()
-            }
             value == "." -> {
                 onPointClicked()
+            }
+            value == "C"->{
+                onCclicked()
             }
             value == "=" -> onEqualsClicked()
             listOf("/", "*", "-", "+").contains(value) -> onSymbolClicked(value)
         }
     }
     private fun onCclicked() {
-        if(point == true){
-            point = false
+        if(decim == true){
+            decim = false
             input = previousInput
             previousInput = null
             updateDisplayContainer(input.toString())
-        }else if (symbol != null && input != null && previousPoint == 0 ){
+        }else if (symbol != null && input != null && previousDecim == 0 ){
             input = null
             updateDisplayContainer("symbole")
-        }else if(symbol != null && input != null && previousPoint == 0){
-        }else if(symbol != null && input == null  && previousPoint == 0 ){
+        }else if(symbol != null && input != null && previousDecim == 0){
+        }else if(symbol != null && input == null  && previousDecim == 0 ){
             symbol = null
             input = previousInput
             previousInput = null
             updateDisplayContainer(input.toString())
-        }else if(symbol == null && input != null && previousPoint == 0){
+        }else if(symbol == null && input != null && previousDecim == 0){
             input = null
             symbol = null
             previousInput = null
             updateDisplayContainer("")
-        }else if(symbol == null && input != null && previousPoint != 0){
-            if(previousPoint ==  1 ){
-                previousPoint!! - 1
+        }else if(symbol == null && input != null && previousDecim != 0){
+            if(previousDecim ==  1 ){
+                previousDecim!! - 1
                 input = null
-                point = true
+                decim = true
                 updateDisplayContainer(".")
             }else{
-                previousPoint!! - 1
+                previousDecim!! - 1
                 input = previousInput
                 previousInput = null
                 updateDisplayContainer(input.toString())
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun onPointClicked(){
         updateDisplayContainer(".")
-        point = true
+        decim = true
         previousInput = input
         input = null
     }
@@ -157,7 +157,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun onEqualsClicked() {
         if (input == null || previousInput == null || symbol == null) {
-
             return
         }
 
@@ -174,9 +173,9 @@ class MainActivity : AppCompatActivity() {
             else -> "ERROR"
         })
         when (symbol) {
-            "+" -> input =  input!! + previousSymbol!!
             "-" -> input = previousSymbol!! - input!!
             "*" -> input = input!! * previousSymbol!!
+            "+" -> input =  input!! + previousSymbol!!
             "/" ->
                 if (previousSymbol == 0.0f || input == 0.0f){
                     input = input
