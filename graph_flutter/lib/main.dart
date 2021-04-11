@@ -1,6 +1,6 @@
 import 'dart:html';
 import 'dart:math';
-import 'package:calculator_flutter/res/colors.dart';
+import 'package:graph_flutter/res/colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
